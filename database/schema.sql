@@ -135,4 +135,4 @@ $$ language 'plpgsql';
 
 CREATE TRIGGER update_customer_stats_trigger
     AFTER INSERT OR UPDATE OR DELETE ON orders
-    FOR EACH ROW EXECUTE FUNCTION update_customer_stats();
+    FOR EACH ROW EXECUTE FUNCTION update_customer_stats();z
