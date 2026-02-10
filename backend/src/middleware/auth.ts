@@ -1,17 +1,19 @@
-import { Request, Response, NextFunction } from 'express';
 import { ApiResponse } from '@ai-data-assistant/shared';
 
-export interface AuthRequest extends Request {
+export interface AuthRequest {
   user?: {
     id: string;
     email: string;
     role: string;
   };
+  header?: (name: string) => string | undefined;
+  query?: any;
+  ip?: string;
 }
 
 // Simple API key authentication middleware
-export const authenticateApiKey = (req: AuthRequest, res: Response, next: NextFunction) => {
-  const apiKey = req.header('X-API-Key') || req.query.apiKey as string;
+export const authenticateApiKey = (req: any, res: any, next: any) => {
+  const apiKey = req.header('X-API-Key') || req.query?.apiKey as string;
   const validApiKey = process.env.API_KEY;
 
   // If no API key is configured, skip authentication
@@ -38,7 +40,7 @@ export const authenticateApiKey = (req: AuthRequest, res: Response, next: NextFu
 };
 
 // Admin role middleware
-export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const requireAdmin = (req: any, res: any, next: any) => {
   if (!req.user || req.user.role !== 'admin') {
     const response: ApiResponse = {
       success: false,
@@ -54,7 +56,7 @@ export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction
 export const rateLimiter = (windowMs: number, max: number) => {
   const requests = new Map<string, { count: number; resetTime: number }>();
 
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: any, res: any, next: any) => {
     const clientId = req.ip || 'unknown';
     const now = Date.now();
     const windowStart = now - windowMs;
