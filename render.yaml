@@ -3,7 +3,7 @@ services:
     name: ai-data-assistant-api
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build:shared && npm run build:backend
+    buildCommand: npm install --include=dev && npm run build:shared && npm run build:backend
     startCommand: npm run start --prefix backend
     envVars:
       - key: NODE_ENV
